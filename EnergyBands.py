@@ -28,6 +28,13 @@ dT=dK/force
 #First Brillouin Zone
 fbz=np.linspace(0,2*momentum_recoil-dK,discret)
 
+def superlattice(a1,a2,phase,xmin,xmax):
+    sl=[]
+    it=0
+    for x in np.linspace(xmin,xmax,500):
+        sl.append([x,-a1*np.cos(4*pi*x)**2-a2*np.cos(5*pi*x+phase)**2])
+    return([list(x) for x in zip(*sl)])
+
 # =============================================================================
 # Define a sparse Hamiltonian and reduced Hamiltonian solely for eigenvalue purposes
 # =============================================================================
@@ -73,4 +80,14 @@ def plot_energybands(bandstoplot):
     plt.ylabel('Energy: E/E_R')
     plt.savefig("EnergyBands%s_A1_%s_A2_%s_phi_%s.png"%(bands,A_1,A_2,phistring))  
     
+def plot_superlattice(a1,a2,phase,xmin,xmax):
+    fig=plt.figure()
+    superlatticelist=superlattice(a1,a2,phase,xmin,xmax)
+    plt.plot(superlatticelist[0],superlatticelist[1])
+    plt.title('Superlattice in real space')
+    plt.xlabel('Real space: x/4d')
+    plt.ylabel('Energy: V(x)/E_R')
+    plt.savefig("Superlattice_A1_%s_A2_%s_phi_%s.png"%(A_1,A_2,phistring))  
+    
+plot_superlattice(A_1,A_2,phi,0,4)
 plot_energybands(bands)
